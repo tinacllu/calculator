@@ -1,11 +1,22 @@
 import { FC, useContext } from "react";
-import { AppContext } from "../App";
-import { AppContextType } from "../types/types";
+import { CalculatorContext } from "./Calculator";
+import { CalculatorContextType } from "../types/types";
 
 import { v4 as uuidv4 } from "uuid";
 
 const InputHistory: FC = () => {
-    const {pastEquations, setPastEquations, handlePastEquations} = useContext(AppContext) as AppContextType;
+    const {pastEquations, setPastEquations, setCurrentEquation, setResult } = useContext(CalculatorContext) as CalculatorContextType;
+
+    const handlePastEquations = (eqn: string):void => {
+        eqn = eqn.substring(0, eqn.length - 1);
+        setCurrentEquation(eqn.split('')); 
+        const tempArray:Array<string> = pastEquations;
+        const eqnIndex:number = pastEquations.indexOf(eqn);
+        tempArray.splice(eqnIndex, 1);
+        setPastEquations([...tempArray]);
+        setResult('');
+    }
+
     return (
         <div className="inputHistory">
             <div className="header">
@@ -15,7 +26,6 @@ const InputHistory: FC = () => {
                         ? <button onClick={() => {setPastEquations([])}}>Clear</button>
                         : null
                 }
-                
             </div>
             {
                 pastEquations.length > 0
@@ -34,7 +44,6 @@ const InputHistory: FC = () => {
                     )
                     :<p>Input some calculations to see your history!</p>
             }
-
         </div>
     )
 };

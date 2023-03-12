@@ -9,7 +9,7 @@ interface Props {
 const Button: FC<Props> = ({symbol, value, handleClick}) => {
     return (
         <li className="inputButton">
-            <button onClick = {() => {handleClick(value)}}>{symbol}</button>
+            <button data-testid={value} onClick = {() => {handleClick(value)}}>{symbol}</button>
         </li>
     )
 };

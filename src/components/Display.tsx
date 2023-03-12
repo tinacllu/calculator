@@ -1,10 +1,34 @@
 import { FC, useEffect, useContext  } from "react";
 
-import { AppContext } from "../App";
-import { AppContextType } from "../types/types";
+import { CalculatorContext } from "./Calculator";
+import { CalculatorContextType } from "../types/types";
 
 const Display:FC = () => {
-  const {currentEquation, formattedEquation, setFormattedEquation, result, handleFormatInput, showErrorMsg} = useContext(AppContext) as AppContextType;
+  const {currentEquation, formattedEquation, setFormattedEquation, result, showErrorMsg} = useContext(CalculatorContext) as CalculatorContextType;
+
+  const handleFormatInput = (input:Array<string>):Array<string> => {
+    let formattedArray:Array<string> = [];
+    for (let i:number = 0; i < input.length; i++) {
+      switch(input[i]) {
+        case '(':
+          break;
+        case ')':
+         break;
+        case '/':
+          formattedArray.push('÷');
+          break;
+        case '*':
+          formattedArray.push('x');
+          break;
+        case 'sqrt':
+          formattedArray.push('√');
+          break;
+        default:
+          formattedArray.push(input[i]);
+      }  
+    }
+    return(formattedArray);
+  }
 
   useEffect(() => {
     setFormattedEquation(handleFormatInput(currentEquation));
@@ -12,7 +36,7 @@ const Display:FC = () => {
 
   return (
     <div className="displayContainer">
-      <h2 className="inputContainer">
+      <h2 className="inputContainer" data-testid='input'>
         {
           formattedEquation.length > 0
             ? null
@@ -22,7 +46,7 @@ const Display:FC = () => {
       </h2>
       {
         !showErrorMsg
-          ? (<h2 className="resultContainer">
+          ? (<h2 className="resultContainer" data-testid='result'>
               {
                 result !== ''
                   ? null

@@ -1,10 +1,11 @@
 import { FC, useContext } from "react";
 
-import { AppContext } from "../App";
-import { AppContextType } from "../types/types";
+import { CalculatorContext } from "./Calculator";
+import { CalculatorContextType } from "../types/types";
 
-const Error:FC = () => {
-  const {setShowErrorModal, setShowErrorMsg} = useContext(AppContext) as AppContextType;
+
+const ErrorModal:FC = () => {
+  const { setShowErrorModal, setShowErrorMsg } = useContext(CalculatorContext) as CalculatorContextType;
 
   return (
     <div className="errorModal">
@@ -16,4 +17,4 @@ const Error:FC = () => {
   )
 }
 
-export default Error;
+export default ErrorModal;

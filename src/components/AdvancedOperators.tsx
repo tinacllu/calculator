@@ -1,13 +1,13 @@
 import { FC, useContext } from "react";
 
-import { AppContext } from "../App";
-import { AppContextType } from "../types/types";
+import { CalculatorContext } from "./Calculator";
+import { CalculatorContextType } from "../types/types";
 
 import Button from './Button';
 
 const AdvancedOperators:FC = () => {
 
-  const { handleUpdateInput } = useContext(AppContext) as AppContextType;
+  const { handleUpdateInput } = useContext(CalculatorContext) as CalculatorContextType;
 
   return (
     <ul className="advancedOperators">
