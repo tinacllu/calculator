@@ -1,0 +1,35 @@
+@use './variables' as *;
+
+
+html {
+ font-size: 100%;
+}
+
+body {
+    font-family: 'Poppins', sans-serif; 
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+}
+
+h1, h2, p {
+    padding: 0;
+    margin: 0;
+}
+
+h1 {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: clamp(3.5rem, 7.5vw, 9rem);
+    font-weight: bold;
+    color: white;
+    margin: 20px 0;
+}
+
+h2 {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    padding-bottom: 15px;
+    letter-spacing: 5px;
+}
+
+p {
+    line-height: 1.5rem;
+    padding: 10px 0;
+}

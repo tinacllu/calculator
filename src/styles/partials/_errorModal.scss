@@ -1,0 +1,36 @@
+@use './variables' as *;
+
+.errorModal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb($darkBlue, 0.25);
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    .errorMsg {
+        background-color: $lightGray;
+        width: 360px;
+        height: 200px;
+        padding: 10px;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 50px;
+    }
+    button, p {
+        height: 50%;
+    }
+    button {
+        background-color: transparent;
+        align-self: flex-end;
+        justify-self: flex-start;
+        padding: 5px;
+        margin: 0;
+        width: fit-content;
+        height: fit-content;
+    }
+}

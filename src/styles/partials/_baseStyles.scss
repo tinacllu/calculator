@@ -1,0 +1,52 @@
+@use './variables' as *;
+
+.wrapper {
+    margin: 0 auto;
+    width: 90%;
+    max-width: 400px;
+}
+
+html {
+    background-color: $darkBlue;
+}
+
+main {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+img {
+    display: block;
+    width:100%;
+    height: 100%;
+}
+
+ul {
+    list-style: none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+button {
+    all: unset;
+    background-color: $gray;
+    color: $darkBlue;
+    border-radius: 15px;
+    padding: 10px;
+    text-align: center;
+    transition: 0.3s;
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    &:hover{
+        cursor: pointer;
+        background-color: $darkGray;
+    }
+    &:active{
+        transform: scale(0.95);
+    }
+}
