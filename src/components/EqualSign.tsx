@@ -6,9 +6,8 @@ import { CalculatorContext } from "./Calculator";
 import { CalculatorContextType } from "../types/types";
 
 const EqualSign:FC = () => {
-    const { currentEquation, setCurrentEquation, setCurrentOperand, result, setResult, pastEquations, setPastEquations, setFormattedEquation, setShowErrorModal, setShowErrorMsg } = useContext(CalculatorContext) as CalculatorContextType;
+    const { currentEquation, setCurrentEquation, setCurrentOperand, setResult, pastEquations, setPastEquations, setFormattedEquation, setShowErrorModal, setShowErrorMsg } = useContext(CalculatorContext) as CalculatorContextType;
 
-    
     const handleFormatEqn = (eqn: Array<string>):string => {
         const indexList : Array<number> = [];
         const eqnLength : number = eqn.length;
