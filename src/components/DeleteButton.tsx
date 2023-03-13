@@ -9,9 +9,6 @@ const DeleteButton: FC = () => {
 
     const handleDeleteInput = ():void => {
       if (currentEquation.length > 0) {
-        console.log('delete!')
-
-  
         let newEqn:Array<string> | string = currentEquation;
 
         const lastInput = currentEquation[currentEquation.length - 1];
@@ -20,22 +17,18 @@ const DeleteButton: FC = () => {
           setCurrentEquation(newEqn);
         } else if (lastInput.length > 0) {
           const lastItemIndex:number = newEqn.length - 1;
-          console.log(newEqn[lastItemIndex]);
           newEqn[lastItemIndex] = newEqn[lastItemIndex].slice(0, -1);
-          console.log(newEqn[lastItemIndex]);
           setCurrentEquation(newEqn);
         }
 
         if (currentOperand.length === 1 || currentOperand === 'sqrt') {
           const prevOperand = currentEquation[currentEquation.length - 1];
-          console.log(1);
           if (prevOperand) {
             setCurrentOperand(currentEquation[currentEquation.length - 1]);
           } else {
             setCurrentOperand('');
           }
         } else {
-          console.log(2);
           const newOperand : string = currentOperand;
           setCurrentOperand(newOperand.slice(0, -1));
         }

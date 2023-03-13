@@ -22,10 +22,8 @@ const MemoryOperators:FC = ( ) => {
   };
 
   const handleUseMemory = (operator:OperatorTypes):void => {
-    console.log('memory use')
     if (memoryStore) {
       const eqn = [result, operator, memoryStore].join('');
-      console.log(eqn)
       try {
         const answer = math.evaluate(eqn)
         setResult(answer);

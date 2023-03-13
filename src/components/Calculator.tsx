@@ -45,19 +45,24 @@ const Calculator:FC = () => {
     };
 
     const handleDecimals = (value: string) => {
-        if (value === '.') {
-            if (currentOperand.length === 0) {
-                return '0.';
-            } else if (currentOperand.includes('.')) {
-                return;
-            } else if (!currentOperand.includes('.')) {
+        switch (true) {
+            case (value === '.') :
+                if (currentOperand.length === 0) {
+                    return '0.';
+                } else if (currentOperand.includes('.')) {
+                    return;
+                } else if (!currentOperand.includes('.')) {
+                    if (operatorList.includes(currentOperand)) {
+                        return ('0.')
+                    } else {
+                        return (currentOperand + value);
+                    }
+                }
+                break;
+            case (currentOperand.length === 0 || operatorList.includes(currentOperand)):
+                return value;
+            default:
                 return (currentOperand + value);
-            }
-        } else if (currentOperand.length === 0 || operatorList.includes(currentOperand)) {
-            return value;
-        } else {
-            console.log('im the problem')
-            return (currentOperand + value);
         }
     }
 
@@ -75,13 +80,12 @@ const Calculator:FC = () => {
             }
         } else if (operatorList.includes(value)){
             // (prevChar === '%' && value !== '%') || (value === '-' && prevInput === 'sqrt')
-            if (prevChar === '%' && value !== '%') {
-                console.log('jdkl')
+            // (prevChar === '%' && value !== '%')
+            if ((prevChar === '%' && value !== '%') || (value === '-' && prevInput === 'sqrt')) {
                 setCurrentOperand(value);
                 setCurrentEquation([...currentEquation, value]);
                 return;
             } else {
-                console.log('ops')
                 setCurrentOperand(value);
                 const tempArray: Array<string> = currentEquation;
                 tempArray.pop();
@@ -89,7 +93,6 @@ const Calculator:FC = () => {
                 return;
             }
         } else {
-            console.log('operator followed by number')
             const valueToAdd = handleDecimals(value);
             if (valueToAdd) {
                 setCurrentOperand(valueToAdd);
@@ -135,15 +138,12 @@ const Calculator:FC = () => {
             }
             break;
         case (currentEquation.length > 0 && decimal.test(prevChar)):
-            console.log('case 3');
             if (value === '0') {
                 valueToAdd = handleZeros(value);
                 if (valueToAdd !== undefined) {
                     setCurrentOperand(valueToAdd);
                     const tempArray: Array<string> = currentEquation;
-                    console.log(tempArray)
                     tempArray.pop();
-                    console.log(tempArray)
                     setCurrentEquation([...tempArray, valueToAdd]);
                     return;
                 }
@@ -163,7 +163,6 @@ const Calculator:FC = () => {
             }
             break;
         case (currentEquation.length > 0 && operatorList.includes(prevChar)):
-            console.log('case4')
             handleOperators(value);
             break;
     }

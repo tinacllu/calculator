@@ -2,10 +2,6 @@ import Calculator from "../components/Calculator";
 import { fireEvent, render } from "@testing-library/react";
 
 describe('Calculator', () => {
-    it('should render without crashing', () => {
-        const calculator = render(<Calculator />);
-        console.log(calculator)
-    });
 
     it('should add two numbers correctly', () => {
         const { getByTestId } = render(<Calculator />);

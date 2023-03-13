@@ -8,7 +8,6 @@ const Display:FC = () => {
 
   const handleFormatInput = (input:Array<string>):Array<string> => {
     let formattedArray:Array<string> = [];
-    console.log(input)
     for (let i:number = 0; i < input.length; i++) {
       switch(input[i]) {
         case '(':
@@ -41,7 +40,6 @@ const Display:FC = () => {
   }
 
   useEffect(() => {
-    console.log('update mfkr');
     setFormattedEquation(handleFormatInput(currentEquation));
   },[currentEquation, currentOperand]);
 

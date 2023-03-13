@@ -22,7 +22,7 @@
         height: 60px;
         padding: 10px;
         width: 340px;
-        overflow: scroll;
+        overflow: auto;
         text-align: right;
         .placeholder {
             color: gray;
@@ -55,6 +55,15 @@
     button {
         width: 100%;
         height: 25px;
+    }
+}
+
+.memoryMsg {
+    font-size: 0.75em;
+    padding: 5px 10px;
+    .placeholder {
+        font-style: italic;
+        color: $darkGray;
     }
 }
 
