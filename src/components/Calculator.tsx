@@ -17,16 +17,14 @@ export const CalculatorContext = createContext<CalculatorContextType | string >(
 const Calculator:FC = () => {
 
     const [ currentEquation, setCurrentEquation ] = useState<string[]>([]);
+    const [ currentOperand, setCurrentOperand ] = useState<string>('');
     const [ formattedEquation, setFormattedEquation ] = useState<string[]>([]);
     const [ result, setResult ] = useState<string>("");
     const [ pastEquations, setPastEquations ] = useState<string[]>([]);
     const [ showAdvanced, setShowAdvanced ] = useState<boolean>(false);
     const [ showHistory, setShowHistory ] = useState<boolean>(false);
-    
     const [ showErrorModal, setShowErrorModal ] = useState<boolean>(false);
     const [ showErrorMsg, setShowErrorMsg ] = useState<boolean>(false);
-
-    const [ currentOperand, setCurrentOperand ] = useState<string>('');
 
     const operatorList:Array<string> = ['+', '-', '*', '/', 'sqrt', '^', '%'];
     const decimal:RegExp = (/^\d*\.?\d*$/);
@@ -172,7 +170,6 @@ const Calculator:FC = () => {
             handleOperators(value);
             break;
     }
-
   };
 
   const contextValue: CalculatorContextType = {

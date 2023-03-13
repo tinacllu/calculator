@@ -22,10 +22,10 @@ const MemoryOperators:FC = ( ) => {
   };
 
   const handleUseMemory = (operator:OperatorTypes):void => {
-    if (memoryStore) {
+    if (memoryStore !== '') {
       const eqn = [result, operator, memoryStore].join('');
       try {
-        const answer = math.evaluate(eqn)
+        const answer = math.evaluate(eqn);
         setResult(answer);
         setCurrentOperand(answer);
         setMemoryStore(answer);
@@ -45,9 +45,9 @@ const MemoryOperators:FC = ( ) => {
     <>
       <div className="memoryMsg" data-testid="memory">Memory: 
       {
-        memoryStore
+        (memoryStore !== '')
           ? <span> {memoryStore}</span>
-          : <span className="placeholder"> Click MS to save ans in memory</span>
+          : <span className="placeholder"> Click MS to save answer in memory</span>
       }
       </div>
       <ul className="memoryOperators">
@@ -55,7 +55,7 @@ const MemoryOperators:FC = ( ) => {
           <Button symbol = 'M-' value = 'M-' handleClick={() => handleUseMemory('-')} />
           <Button symbol = 'MR' value = 'MR' handleClick={handleMemoryRecall} />
           <Button symbol = 'MC' value = 'MC' handleClick={() => setMemoryStore('')} />
-          <Button symbol = 'MS' value = 'MS' handleClick={() => {setMemoryStore(result); setCurrentOperand('')}} />
+          <Button symbol = 'MS' value = 'MS' handleClick={() => {setMemoryStore(result); setCurrentOperand('');}} />
       </ul>
     </>
   )

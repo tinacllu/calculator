@@ -67,8 +67,6 @@ const EqualSign:FC = () => {
             setCurrentEquation([]);
             setFormattedEquation([]);
             setCurrentOperand('');
-
-        
         } else {
             setShowErrorMsg(true);
         }

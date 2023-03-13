@@ -48,6 +48,8 @@
         button {
             width: 150px;
             margin: 5px 0;
+            min-height: fit-content;
+            overflow-wrap: anywhere;
         }
     }
 }
