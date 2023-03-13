@@ -1,15 +1,20 @@
 @use './variables' as *;
+@use './mediaQueries' as *;
 
 .calculator {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: row;
+    flex-direction: row-reverse;
     gap: 50px;
+
+    @include tablet {
+        flex-direction: column-reverse;
+    }
     
     .inputHistory {
-        width: 200px;
-        height: 630px; 
+        width: 280px;
+        max-height: 597px;
         overflow: auto;
         display: flex;
         flex-direction: column;
@@ -20,10 +25,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-direction: column;
+            margin-top: 25px;
+            h2 {
+                padding-bottom: 5px;
+            }
             button {
-                height: 25px;
-                width: calc(100% - 20px);
+                margin-left: 10px;
+                height: 15px;
+                width: fit-content;
                 background-color: $lightTeal;
                 &:hover {
                     background-color: $teal;
@@ -37,8 +46,8 @@
         }
 
         button {
-            width: calc(100% - 20px);
-            margin: 10px 0;
+            width: 150px;
+            margin: 5px 0;
         }
     }
 }

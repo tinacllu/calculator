@@ -6,12 +6,14 @@ import { CalculatorContext } from "./Calculator";
 import { CalculatorContextType } from "../types/types";
 
 const EqualSign:FC = () => {
-    const { currentEquation, setCurrentEquation, setCurrentOperand, setResult, pastEquations, setPastEquations, setFormattedEquation, setShowErrorModal, setShowErrorMsg } = useContext(CalculatorContext) as CalculatorContextType;
+    const { currentEquation, setCurrentEquation, setCurrentOperand, result, setResult, pastEquations, setPastEquations, setFormattedEquation, setShowErrorModal, setShowErrorMsg } = useContext(CalculatorContext) as CalculatorContextType;
 
-    const operatorList:Array<string> = ['+', '-', '*', '/', 'sqrt', '^'];
+    
     const handleFormatEqn = (eqn: Array<string>):string => {
         const indexList : Array<number> = [];
         const eqnLength : number = eqn.length;
+        const operatorList:Array<string> = ['+', '-', '*', '/', '^'];
+
         eqn.forEach((operand, index) => {
             if (operand === 'sqrt') {
                 eqn[index] = 'sqrt(';
@@ -27,6 +29,9 @@ const EqualSign:FC = () => {
                     eqn[i] = `${parseInt(eqn[i])/100})`;
                     eqn[i+1] = '';
                     return;
+                } else if (operatorList.includes(eqn[i+1])) {
+                    eqn[i] = `${eqn[i]})`;
+                    return;
                 }
             }
         })
@@ -35,9 +40,9 @@ const EqualSign:FC = () => {
 
     const handleCalculate = ():void => {
         const prevInput:string = currentEquation[currentEquation.length - 1];
+        const operatorList:Array<string> = ['+', '-', '*', '/', 'sqrt', '^'];
         
-    
-        if (!operatorList.includes(prevInput)) {
+        if (!operatorList.includes(prevInput) && currentEquation.length > 0) {
             let eqn:string = '';
             if (typeof currentEquation === 'object') {
                 eqn = handleFormatEqn(currentEquation);
@@ -59,10 +64,11 @@ const EqualSign:FC = () => {
                 setShowErrorModal(true);
                 setShowErrorMsg(true)
             }
-        
+
             setCurrentEquation([]);
             setFormattedEquation([]);
             setCurrentOperand('');
+
         
         } else {
             setShowErrorMsg(true);

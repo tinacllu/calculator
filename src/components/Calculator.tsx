@@ -31,6 +31,7 @@ const Calculator:FC = () => {
     const operatorList:Array<string> = ['+', '-', '*', '/', 'sqrt', '^', '%'];
     const decimal:RegExp = (/^\d*\.?\d*$/);
   
+    //prevent users from chaining zeros unless after a non-zero number / decimal point
     const handleZeros = (value: string) => {
         const prevChar = currentOperand[currentOperand.length - 1]
         if (currentOperand.length > 0) {
@@ -44,6 +45,7 @@ const Calculator:FC = () => {
         }
     };
 
+    //prevent users from chaining decimals
     const handleDecimals = (value: string) => {
         switch (true) {
             case (value === '.') :
@@ -66,11 +68,12 @@ const Calculator:FC = () => {
         }
     }
 
+    //prevent user from chaining operators
     const handleOperators = (value: string) => {
         const prevChar = currentOperand[currentOperand.length - 1];
         const prevInput = currentEquation[currentEquation.length -1];
         if (value === 'sqrt') {
-            if ( prevChar === '%') {
+            if ( prevChar === '%' || decimal.test(prevChar)) {
                 setCurrentOperand(value);
                 setCurrentEquation([...currentEquation, '*', value]);
                 return;
@@ -79,8 +82,6 @@ const Calculator:FC = () => {
                 setCurrentEquation([...currentEquation, value]);
             }
         } else if (operatorList.includes(value)){
-            // (prevChar === '%' && value !== '%') || (value === '-' && prevInput === 'sqrt')
-            // (prevChar === '%' && value !== '%')
             if ((prevChar === '%' && value !== '%') || (value === '-' && prevInput === 'sqrt')) {
                 setCurrentOperand(value);
                 setCurrentEquation([...currentEquation, value]);
@@ -101,6 +102,7 @@ const Calculator:FC = () => {
             }
         }
     }
+
   //consolidates user input
   const handleUpdateInput = (value:string):void => {
     let valueToAdd: string | undefined = ''
@@ -156,6 +158,10 @@ const Calculator:FC = () => {
                     setCurrentEquation([...tempArray, valueToAdd]);
                     return;
                 }
+            } else if (value ==='sqrt') {
+                setCurrentOperand(value);
+                setCurrentEquation([...currentEquation, '*', value]);
+                return;
             } else {
                 setCurrentOperand(value);
                 setCurrentEquation([...currentEquation, value]);
@@ -201,12 +207,11 @@ const Calculator:FC = () => {
                         </div>)
                     }
                     <div className="menuButtons">
-                        <button data-testid="more" onClick={() => setShowAdvanced(!showAdvanced)}>
-                            {showAdvanced
-                            ? <p>Less</p>
-                            : <p>More</p>
-                            }
-                        </button>
+                        {
+                            showAdvanced
+                                ?<button data-testid="more" onClick={() => setShowAdvanced(!showAdvanced)}>Less</button>
+                                :<button data-testid="more" onClick={() => setShowAdvanced(!showAdvanced)}>More</button>
+                        }
                         <button data-testid="history" onClick={() => setShowHistory(!showHistory)}>
                             <i className="fa-solid fa-clock-rotate-left"></i>
                         </button>

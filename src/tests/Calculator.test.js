@@ -279,7 +279,7 @@ describe('Calculator', () => {
         expect(result.textContent).toBe('86');
     });
 
-    it('should subtract number in memory store to current result value and update memory store with difference', () => {
+    it('should subtract positive number in memory store to current result value and update memory store with difference', () => {
         const { getByTestId } = render(<Calculator />);
 
         const moreButton = getByTestId('more');
@@ -305,6 +305,35 @@ describe('Calculator', () => {
         const result = getByTestId('result');
 
         expect(result.textContent).toBe('-76');
+    });
+
+    it('should subtract negative number in memory store to current result value and update memory store with difference', () => {
+        const { getByTestId } = render(<Calculator />);
+
+        const moreButton = getByTestId('more');
+        fireEvent.click(moreButton);
+
+        const subtractButton = getByTestId('-');
+        const twoButton = getByTestId('2');
+        const eightButton = getByTestId('8');
+        const memoryStoreButton = getByTestId('MS');
+        const memorySubtractButton = getByTestId('M-');
+        const equalButton = getByTestId('=');
+        
+        fireEvent.click(subtractButton);
+        fireEvent.click(eightButton);
+        fireEvent.click(twoButton);
+        fireEvent.click(equalButton);
+        fireEvent.click(memoryStoreButton);
+        fireEvent.click(eightButton);
+        fireEvent.click(subtractButton);
+        fireEvent.click(twoButton);
+        fireEvent.click(equalButton);
+        fireEvent.click(memorySubtractButton);
+
+        const result = getByTestId('result');
+
+        expect(result.textContent).toBe('88');
     });
 
     it('should return error message for invalid equations', () => {

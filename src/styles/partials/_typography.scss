@@ -7,7 +7,7 @@ html {
 
 body {
     font-family: 'Poppins', sans-serif; 
-    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    font-size: 15px;
 }
 
 h1, h2, p {
@@ -17,14 +17,14 @@ h1, h2, p {
 
 h1 {
     font-family: 'Cabin Sketch', cursive;
-    font-size: clamp(3.5rem, 7.5vw, 9rem);
+    font-size: 35px;
     font-weight: bold;
     color: white;
-    margin: 20px 0;
+    margin: 10px 0 20px;;
 }
 
 h2 {
-    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-size: 18px;
     padding-bottom: 15px;
     letter-spacing: 5px;
 }

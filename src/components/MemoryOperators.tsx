@@ -27,6 +27,7 @@ const MemoryOperators:FC = ( ) => {
       try {
         const answer = math.evaluate(eqn)
         setResult(answer);
+        setCurrentOperand(answer);
         setMemoryStore(answer);
         if (eqn !== '') {
           setPastEquations([...pastEquations, eqn]);
@@ -35,6 +36,8 @@ const MemoryOperators:FC = ( ) => {
         setShowErrorModal(true);
       }
       setCurrentEquation([]);
+    } else {
+      setMemoryStore(result);
     }
   }
 
@@ -44,7 +47,7 @@ const MemoryOperators:FC = ( ) => {
       {
         memoryStore
           ? <span> {memoryStore}</span>
-          : <span className="placeholder"> Click MS to save a result in memory</span>
+          : <span className="placeholder"> Click MS to save ans in memory</span>
       }
       </div>
       <ul className="memoryOperators">
