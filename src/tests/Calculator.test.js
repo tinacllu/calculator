@@ -86,6 +86,31 @@ describe('Calculator', () => {
 
         expect(result.textContent).toBe('Infinity');
     });
+    
+    it('should perform BEDMAS order of operations correctly', () => {
+        const { getByTestId } = render(<Calculator />);
+        const sevenButton = getByTestId('7');
+        const twoButton = getByTestId('2');
+        const addButton = getByTestId('+');
+        const subtractButton = getByTestId('-');
+        const multiplyButton = getByTestId('*');
+        const divideButton = getByTestId('/');
+        const equalButton = getByTestId('=');
+        const result = getByTestId('result');
+
+        fireEvent.click(sevenButton);
+        fireEvent.click(subtractButton);
+        fireEvent.click(twoButton);
+        fireEvent.click(multiplyButton);
+        fireEvent.click(sevenButton);
+        fireEvent.click(divideButton);
+        fireEvent.click(twoButton);
+        fireEvent.click(addButton);
+        fireEvent.click(sevenButton);
+        fireEvent.click(equalButton);
+
+        expect(result.textContent).toBe('7');
+    });
 
     it('should find the correct square root of a number', () => {
         const { getByTestId } = render(<Calculator />);

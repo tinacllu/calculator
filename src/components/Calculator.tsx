@@ -26,117 +26,155 @@ const Calculator:FC = () => {
     const [ showErrorModal, setShowErrorModal ] = useState<boolean>(false);
     const [ showErrorMsg, setShowErrorMsg ] = useState<boolean>(false);
 
+    const [ currentOperand, setCurrentOperand ] = useState<string>('');
+
     const operatorList:Array<string> = ['+', '-', '*', '/', 'sqrt', '^', '%'];
     const decimal:RegExp = (/^\d*\.?\d*$/);
-  // TODO 
-    //empty input, somethign in result, press % -> shows up as % instead of result %
-    //prevent user from chaining zeros unless after a decimal
-    //8 sqrt % -> (8)% -> expression error 
-    // no input, no result -> add -, then dd operator -> shows up as -'operator'
-  const handleZeroes = (value: string) => {
-    const arrayLength: number = currentEquation.length;
-    if (arrayLength > 0) {
-      let i:number = currentEquation.length - 1;
-
-      while (i >= 0) {
-        if (currentEquation[i] === '.' || (/[1-9]/).test(currentEquation[i])) {
-          setCurrentEquation([...currentEquation, value]);
-          break;
-        } else if (operatorList.includes(currentEquation[i])) {
-          break;
-        } 
-        i = i - 1;
-      }
-    } else {
-      setCurrentEquation([...currentEquation, '(', value]);
-    }
-  };
-
-  //prevent user from chaining decimal points 
-  const handleDecimals = (value: string, prevChar: string):void => {    
-    if (value === '.' && !decimal.test(prevChar)) {
-      setCurrentEquation([...currentEquation, '0', value])
-    } else if (value === '.' && prevChar === '.') {
-      return;
-    } else {
-      if (value === '0' && prevChar === '0') {
-        handleZeroes(value);
-      } else {
-        setCurrentEquation([...currentEquation, value])
-      }
-    }
-  };
-
-  //prevent user from chaining operators
-  const handleOperators = (value:string, prevChar:string):void => {
-    console.log('its me')
-    if (['+', '-', '*', '/', 'sqrt', '^'].includes(prevChar) && currentEquation.length > 1) {
-      console.log('case 1')
-      const newEqn:Array<string> = currentEquation.slice(0, -1);
-      setCurrentEquation([...newEqn, value]);
-    } else if (value === '%' && (prevChar === ')' || prevChar === '%')){
-      console.log('case3')
-      return
-    } else {
-      console.log('case 2')
-      setCurrentEquation([...currentEquation, value]);
-    }
-  };
-
-  //add brackets around numbers for downstream equation evaluation
-  const handleBrackets = (value:string, prevChar:string):void => {
-    switch(true) {
-      case (value === '.' && !decimal.test(prevChar)):
-        setCurrentEquation([...currentEquation, '(', '0', value]);
-        break;
-      case (decimal.test(value) && !decimal.test(prevChar)):
-        console.log('hell nooo)')
-        setCurrentEquation([...currentEquation, '(', value]);
-        break;
-      case (value === '%' && prevChar !== ')' && !operatorList.includes(prevChar)):
-        setCurrentEquation([...currentEquation, value, ')']);
-        break;
-      case (!decimal.test(value) && decimal.test(prevChar)):
-        setCurrentEquation([...currentEquation, ')', value]);
-        break;
-    }
-  };
   
+    const handleZeros = (value: string) => {
+        const prevChar = currentOperand[currentOperand.length - 1]
+        if (currentOperand.length > 0) {
+            if (prevChar !== '0' || (prevChar === '0' && currentOperand.includes('.')) || parseInt(currentOperand) > 1) {
+                return (currentOperand + value);
+            } else {
+                return;
+            }
+        } else {
+            return '0';
+        }
+    };
+
+    const handleDecimals = (value: string) => {
+        if (value === '.') {
+            if (currentOperand.length === 0) {
+                return '0.';
+            } else if (currentOperand.includes('.')) {
+                return;
+            } else if (!currentOperand.includes('.')) {
+                return (currentOperand + value);
+            }
+        } else if (currentOperand.length === 0 || operatorList.includes(currentOperand)) {
+            return value;
+        } else {
+            console.log('im the problem')
+            return (currentOperand + value);
+        }
+    }
+
+    const handleOperators = (value: string) => {
+        const prevChar = currentOperand[currentOperand.length - 1];
+        const prevInput = currentEquation[currentEquation.length -1];
+        if (value === 'sqrt') {
+            if ( prevChar === '%') {
+                setCurrentOperand(value);
+                setCurrentEquation([...currentEquation, '*', value]);
+                return;
+            } else {
+                setCurrentOperand(value);
+                setCurrentEquation([...currentEquation, value]);
+            }
+        } else if (operatorList.includes(value)){
+            // (prevChar === '%' && value !== '%') || (value === '-' && prevInput === 'sqrt')
+            if (prevChar === '%' && value !== '%') {
+                console.log('jdkl')
+                setCurrentOperand(value);
+                setCurrentEquation([...currentEquation, value]);
+                return;
+            } else {
+                console.log('ops')
+                setCurrentOperand(value);
+                const tempArray: Array<string> = currentEquation;
+                tempArray.pop();
+                setCurrentEquation([...tempArray, value]);
+                return;
+            }
+        } else {
+            console.log('operator followed by number')
+            const valueToAdd = handleDecimals(value);
+            if (valueToAdd) {
+                setCurrentOperand(valueToAdd);
+                setCurrentEquation([...currentEquation, valueToAdd]);
+                return;
+            }
+        }
+    }
   //consolidates user input
   const handleUpdateInput = (value:string):void => {
+    let valueToAdd: string | undefined = ''
     setShowErrorMsg(false);
     const prevChar:string = currentEquation[currentEquation.length - 1];
-    
-    switch(true) {
-      case (currentEquation.length === 0 && result === ''):
-        if (['+', '/', '*', '%', '^'].includes(value)) {
-          return;
-        } else {
-          handleDecimals(value, prevChar);
-        }
-        break;
-      case (currentEquation.length === 0 && result !== ''):
-        if (operatorList.includes(value)) {
-            console.log('am i the problem')
-          setCurrentEquation([result, value]);
-        } else {
-          handleDecimals(value, prevChar);
-        }
-        setResult('');
-        break;
-      default: 
-        if (operatorList.includes(value)) {
-          handleOperators(value, prevChar);
-        } else {
-          handleDecimals(value, prevChar);
-        }
+
+    switch(true){
+        case (currentEquation.length === 0 && result === ''):
+            if (['/', '*', '+', '^', '%'].includes(value)) {
+                return;
+            } else if (decimal.test(value) || value === 'sqrt' || value === '-') {
+                //check decimal then return value and pass it to setcurrenteqn
+                valueToAdd = handleDecimals(value);
+                if (valueToAdd) {
+                    setCurrentOperand(valueToAdd);
+                    setCurrentEquation([valueToAdd]);
+                    return;
+                }
+            }
+            break;
+        case (currentEquation.length === 0 && result !== ''):
+            if (decimal.test(value) || value === 'sqrt') {
+                valueToAdd = handleDecimals(value);
+                if (valueToAdd) {
+                    setCurrentOperand(valueToAdd);
+                    setCurrentEquation([valueToAdd]);
+                    setResult('');
+                    return;
+                }
+            } else if (['/', '*', '+', '-', '^', '%'].includes(value)) {
+                setCurrentOperand(value);
+                setCurrentEquation([result, value]);
+                setResult('');
+                return;
+            }
+            break;
+        case (currentEquation.length > 0 && decimal.test(prevChar)):
+            console.log('case 3');
+            if (value === '0') {
+                valueToAdd = handleZeros(value);
+                if (valueToAdd !== undefined) {
+                    setCurrentOperand(valueToAdd);
+                    const tempArray: Array<string> = currentEquation;
+                    console.log(tempArray)
+                    tempArray.pop();
+                    console.log(tempArray)
+                    setCurrentEquation([...tempArray, valueToAdd]);
+                    return;
+                }
+            } else if (decimal.test(value)) {
+                valueToAdd = handleDecimals(value);
+                if (valueToAdd) {
+                    setCurrentOperand(valueToAdd);
+                    const tempArray: Array<string> = currentEquation;
+                    tempArray.pop();
+                    setCurrentEquation([...tempArray, valueToAdd]);
+                    return;
+                }
+            } else {
+                setCurrentOperand(value);
+                setCurrentEquation([...currentEquation, value]);
+                return;
+            }
+            break;
+        case (currentEquation.length > 0 && operatorList.includes(prevChar)):
+            console.log('case4')
+            handleOperators(value);
+            break;
     }
-    handleBrackets(value, prevChar);
+
   };
 
   const contextValue: CalculatorContextType = {
     currentEquation: currentEquation,
     setCurrentEquation: setCurrentEquation,
+    currentOperand: currentOperand,
+    setCurrentOperand: setCurrentOperand,
     formattedEquation: formattedEquation,
     setFormattedEquation: setFormattedEquation,
     result: result,

@@ -6,28 +6,58 @@ import { CalculatorContext } from "./Calculator";
 import { CalculatorContextType } from "../types/types";
 
 const EqualSign:FC = () => {
-    const { currentEquation, setCurrentEquation, setResult, pastEquations, setPastEquations, setFormattedEquation, setShowErrorModal, setShowErrorMsg } = useContext(CalculatorContext) as CalculatorContextType;
+    const { currentEquation, setCurrentEquation, setCurrentOperand, setResult, pastEquations, setPastEquations, setFormattedEquation, setShowErrorModal, setShowErrorMsg } = useContext(CalculatorContext) as CalculatorContextType;
+
+    const operatorList:Array<string> = ['+', '-', '*', '/', 'sqrt', '^'];
+    const decimal:RegExp = (/^\d*\.?\d*$/);
+    const handleFormatEqn = (eqn: Array<string>):string => {
+        const indexList : Array<number> = [];
+        const eqnLength : number = eqn.length;
+        eqn.forEach((operand, index) => {
+            if (operand === 'sqrt') {
+                eqn[index] = 'sqrt(';
+                indexList.push(index);
+            }
+        });
+
+        indexList.forEach((index) => {
+            for (let i = index + 1; i < eqnLength; i = i + 1) {
+                console.log(i);
+                console.log(eqn)
+                if (eqn[i+1] === undefined) {
+                    console.log('hello', eqn[i])
+                    eqn[i] = `${eqn[i]})`
+                } else if (eqn[i+1] === '%') {
+                    console.log('hi')
+                    eqn[i] = `${parseInt(eqn[i])/100})`;
+                    eqn[i+1] = '';
+                    return;
+                }
+                // else if (eqn[i + 1] === undefined) {
+                //     eqn[i] = `${eqn[i]})`
+                // }
+            }
+        })
+        console.log(eqn);
+        return eqn.join('');
+    };
 
     const handleCalculate = ():void => {
         const prevInput:string = currentEquation[currentEquation.length - 1];
-        const operatorList:Array<string> = ['+', '-', '*', '/', 'sqrt', '^', '%'];
+        console.log(handleFormatEqn(currentEquation));
     
         if (!operatorList.includes(prevInput)) {
             let eqn:string = '';
             if (typeof currentEquation === 'object') {
-                eqn = currentEquation.join("");
+                eqn = handleFormatEqn(currentEquation);
             } else if (typeof currentEquation === 'string') {
                 eqn = currentEquation;
             }
             
-            if (eqn[eqn.length - 1] !== ')') {
-                eqn = eqn+')';
-            } 
-        
             try {
                 setResult(math.evaluate(eqn));
                 if (eqn !== '') {
-                setPastEquations([...pastEquations, eqn]);
+                    setPastEquations([...pastEquations, eqn]);
                 }
             } catch (e) {
                 setShowErrorModal(true);
@@ -36,10 +66,11 @@ const EqualSign:FC = () => {
         
             setCurrentEquation([]);
             setFormattedEquation([]);
+            setCurrentOperand('');
         
-            } else {
+        } else {
             setShowErrorMsg(true);
-            }
+        }
       };
     
     return (

@@ -1,12 +1,10 @@
-export type OperatorTypes = '+' | '-' | '*' | '/' | 'sqrt' | '^';
-
-export type SymbolTypes = '+' | '-' | '*' | '/' | 'sqrt' | '%' | '^';
-
-export type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '9' ;
+export type OperatorTypes = '+' | '-' | '*' | '/' | 'sqrt' | '^' | '%';
 
 export type CalculatorContextType = {
     currentEquation: Array<string>,
     setCurrentEquation: React.Dispatch<React.SetStateAction<string[]>>,
+    currentOperand: string,
+    setCurrentOperand: React.Dispatch<React.SetStateAction<string>>,
     formattedEquation: Array<string>,
     setFormattedEquation: React.Dispatch<React.SetStateAction<string[]>>,
     result: string,

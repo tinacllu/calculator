@@ -5,10 +5,11 @@ import { CalculatorContext } from "./Calculator";
 import { CalculatorContextType } from "../types/types";
 
 const ClearButton: FC = () => {
-    const { setCurrentEquation, setFormattedEquation, setResult, setShowErrorMsg } = useContext(CalculatorContext) as CalculatorContextType;
+    const { setCurrentEquation, setCurrentOperand, setFormattedEquation, setResult, setShowErrorMsg } = useContext(CalculatorContext) as CalculatorContextType;
 
     const handleClearDisplay = ():void => {
         setCurrentEquation([]);
+        setCurrentOperand('');
         setFormattedEquation([]);
         setResult("");
         setShowErrorMsg(false);

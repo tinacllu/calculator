@@ -4,10 +4,11 @@ import { CalculatorContext } from "./Calculator";
 import { CalculatorContextType } from "../types/types";
 
 const Display:FC = () => {
-  const {currentEquation, formattedEquation, setFormattedEquation, result, showErrorMsg} = useContext(CalculatorContext) as CalculatorContextType;
+  const {currentEquation, formattedEquation, currentOperand, setFormattedEquation, result, showErrorMsg} = useContext(CalculatorContext) as CalculatorContextType;
 
   const handleFormatInput = (input:Array<string>):Array<string> => {
     let formattedArray:Array<string> = [];
+    console.log(input)
     for (let i:number = 0; i < input.length; i++) {
       switch(input[i]) {
         case '(':
@@ -20,6 +21,15 @@ const Display:FC = () => {
         case '*':
           formattedArray.push('x');
           break;
+        case 's':
+          break;
+        case 'q':
+          break;
+        case 'r':
+          break;
+        case 't':
+          formattedArray.push('√');
+          break;
         case 'sqrt':
           formattedArray.push('√');
           break;
@@ -31,8 +41,9 @@ const Display:FC = () => {
   }
 
   useEffect(() => {
+    console.log('update mfkr');
     setFormattedEquation(handleFormatInput(currentEquation));
-  },[currentEquation]);
+  },[currentEquation, currentOperand]);
 
   return (
     <div className="displayContainer">
